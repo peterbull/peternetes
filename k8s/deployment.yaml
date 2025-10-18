@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: peternetes-web
+  name: peternetes-web
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: peternetes-web
+  template:
+    metadata:
+      labels:
+        app: peternetes-web
+    spec:
+      containers:
+        - image: registry.digitalocean.com/bullcr/peternetes-web
+          imagePullPolicy: Always
+          name: peternetes-web

@@ -37,8 +37,27 @@ kubectl scale deployment/peternetes-web --replicas=2
 kubectl describe pod peternetes-web-5dcc96c4dc-n52sq
 
 # remove deployment
-kubectl delete deployment <name>
+kubectl delete deployment "<name>"
 
 # create load balancer
 kubectl expose deployment peternetes-web --type=LoadBalancer --port=80 --target-port=3000
+
+# statej >> yamls
+kubectl get deployment peternetes-web -o yaml >> ./k8s/deployment.yaml
+kubectl get service peternetes-web -o yaml >> ./k8s/service.yaml
+
+# delete and reapply
+kubectl delete deployment peternetes-web
+kubectl get deployments
+kubectl apply -f ./k8s/deployment.yaml
+
+# check rollouts
+kubectl rollout history deployment/peternetes-web
+
+# force update pull
+kubectl rollout restart deployment peternetes-web
+
+# status of rollout
+kubectl rollout status deployment peternetes-web
+
 ```
