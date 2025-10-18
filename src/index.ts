@@ -9,7 +9,8 @@ app.get("/", (c) => {
   const reqUrl = new URL(c.req.url);
   const hostname = reqUrl.hostname;
   const podHostName = os.hostname();
-  const msg = `Peternetes request from ${hostname} handled by ${podHostName} at ${date}`;
+  const fakeSecret = process.env.FAKE_SECRET;
+  const msg = `Peternetes request from ${hostname} handled by ${podHostName} at ${date}. Found ${fakeSecret ? fakeSecret : "no secrets"}`;
 
   console.log(msg);
   return c.text(msg);

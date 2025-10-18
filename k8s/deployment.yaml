@@ -15,7 +15,32 @@ spec:
       labels:
         app: peternetes-web
     spec:
+      initContainers:
+        - name: fake-secrets
+          image: busybox:1.35
+          command: ["sh", "-c"]
+          args:
+            - |
+              echo "FAKE_SECRET=12345" > /shared/secrets.env
+              echo "secrets written"
+          volumeMounts:
+            - name: shared-data
+              mountPath: /shared
       containers:
         - image: registry.digitalocean.com/bullcr/peternetes-web
           imagePullPolicy: Always
           name: peternetes-web
+          command: ["sh", "-c"]
+          args:
+            - |
+              if [ -f /app/secrets/secrets.env ]; then
+                export $(cat /app/secrets/secrets.env | xargs)
+              fi
+              ls -la
+              node dist/index.js
+          volumeMounts:
+            - name: shared-data
+              mountPath: /app/secrets
+      volumes:
+        - name: shared-data
+          emptyDir: {}
