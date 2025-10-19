@@ -31,6 +31,8 @@ spec:
           imagePullPolicy: Always
           name: peternetes-web
           command: ["sh", "-c"]
+          tty: true
+          stdin: true
           args:
             - |
               if [ -f /app/secrets/secrets.env ]; then
